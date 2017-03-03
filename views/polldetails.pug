@@ -1,0 +1,85 @@
+- var poll = polls[0]
+- var myip = ip
+- var loguser = user
+
+      
+doctype html
+html(lang="en")
+  head
+    title Voting App
+    meta(name='description', content='Voting App')
+    meta(name='author', content='Damian Tomaszewski')
+    link(href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', rel='stylesheet')
+    link(href='style.css', rel='stylesheet')
+  body
+    .messages
+      - if (messages.info)
+        each message in messages.info
+          .alert.alert-info
+            button.close(type = 'button', data-dismiss = 'alert') ×
+            strong Info: 
+            span= message
+    .container
+      .header.clearfix
+        - if(loguser == undefined)  
+          a(href="/auth/twitter").btn.btn-default.btn-nav.pull-right#login
+            span(aria.hidden='true').glyphicon.glyphicon-user 
+            |  Sign in with Twitter
+        - else
+          a(href="/logout").btn.btn-default.btn-nav.pull-right#login
+            | Log out - #{user.displayName}
+        nav
+          ul.nav.nav-pills.pull-right
+            li(role='presentation') 
+              a(href="/") Home
+            - if(user!=undefined)
+              li(role='presentation')
+                a(href="/mypolls") My polls
+              li(role='presentation')
+                a(href="/newpoll") New poll
+        h3.text-muted Voting App  
+          
+      .container
+        h2.text-center #{poll.title}
+        .row
+          .col-md-6
+            form(action='/pollvote', method='post')
+              .form-group
+                label(for='polloptions').control-label Select option to vote for:
+                select(name='votefor').form-control#polloptions
+                  option(value='-1') --select option--
+                  -for(var i=0;i<polls[0].options.length;i++){
+                  option(value="" + i) #{poll.options[i]}
+                  -}
+              .form-group
+                label(for='customopt').control-label or
+                input(type='text', placeholder='Log in to add a custom option', readonly='readonly', name='customoption', value='').form-control#customopt
+              .form-group
+                - if(loguser!=undefined)
+                  input(type='hidden', name='votername', value='' + loguser.username)
+                - else
+                  input(type='hidden', name='votername', value='')
+                input(type='hidden', name='voterip', value='' + myip)
+                input(type='hidden', name='pollid', value=''+ poll._id)
+                button(type='submit', disabled="disabled").btn.btn-info.btn-block#btnsub Submit
+            - if(loguser!=undefined)
+              - if(loguser.username == poll.author)
+                a(href="https://twitter.com/intent/tweet?text=My%20poll%20https://"+fulldir).btn.btn-md.btn-primary.btn-block 
+                  i(aria-hidden="true").fa.fa-twitter
+                  |  Share on Twitter
+                a(href='/deletepoll?pollid='+poll._id).btn.btn-md.btn-danger.btn-block#deletepoll Delete this poll
+          .col-md-5.col-md-offset-1
+            canvas(width=400, height=400)#pollchart  
+      
+    
+    script(src='https://code.jquery.com/jquery-3.1.1.min.js')  
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
+    script(src='../scripts/Chart.min.js')
+    script.
+      var poll=!{JSON.stringify(poll)};
+    script(src='drawchart.js')
+    script.
+        var loguser=!{JSON.stringify(loguser)};
+    script(src='formcontrol.js')
+    script(src='deleteconfirm.js')
+    script(src='https://use.fontawesome.com/61cc7f8842.js')

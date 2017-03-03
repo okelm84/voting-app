@@ -1,0 +1,32 @@
+doctype html
+html(lang="en")
+  head
+    title Voting App
+    meta(name='description', content='Voting App')
+    meta(name='author', content='Damian Tomaszewski')
+    link(href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', rel='stylesheet')
+    link(href='style.css', rel='stylesheet')
+  body
+    .container
+      .header.clearfix
+        a(href="/logout").btn.btn-default.btn-nav.pull-right#login
+          | Log out - #{user.displayName}
+        nav
+          ul.nav.nav-pills.pull-right
+            li(role='presentation') 
+              a(href="/") Home
+            li(role='presentation').active
+              a(href="/mypolls") My polls
+            li(role='presentation')
+              a(href="/newpoll") New poll
+        h3.text-muted Voting App  
+          
+      .container
+        h2.text-center My polls
+        .col-md-8.col-md-offset-2
+          - for(var i=0;i<polls.length;i++){
+          - var pollid = polls[i]._id;
+          a(href="/polldetails?pollid="+pollid).btn.btn-default.btn-block #{polls[i].title}
+          -}
+    script(src='https://code.jquery.com/jquery-3.1.1.min.js')  
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')

@@ -1,0 +1,28 @@
+body{
+    padding-top: 20px;
+}
+
+.header {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+}
+
+#login{
+  margin-top: 3px;
+  margin-left: 20px;
+}
+
+#pollchart{
+  width: 100%;
+  height: auto;
+}
+
+h2{
+  margin-bottom: 30px;
+}
